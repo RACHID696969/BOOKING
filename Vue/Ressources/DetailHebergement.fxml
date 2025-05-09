@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Vue.DetailHebergementController">
+    <top>
+        <HBox style="-fx-background-color: #2c3e50; -fx-padding: 20;">
+            <Label fx:id="nomLabel" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Retour" onAction="#handleRetour"
+                    style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="20" padding="40">
+            <GridPane hgap="20" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="100" />
+                    <ColumnConstraints minWidth="250" />
+                </columnConstraints>
+
+                <Label text="Type:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label fx:id="typeLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Étoiles:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label fx:id="etoilesLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Distance:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label fx:id="distanceLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Prix:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label fx:id="prixLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            </GridPane>
+
+            <VBox spacing="10">
+                <Label text="Activités disponibles:" style="-fx-font-weight: bold;" />
+                <Label fx:id="activitesLabel" />
+            </VBox>
+
+            <VBox spacing="10">
+                <Label text="Options disponibles:" style="-fx-font-weight: bold;" />
+                <ListView fx:id="optionsListView" prefHeight="100" />
+            </VBox>
+
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="Réserver cet hébergement" onAction="#handleReserver" prefWidth="200"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 16px;" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

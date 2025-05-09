@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Vue.ReportingController">
+    <top>
+        <HBox style="-fx-background-color: #3498db; -fx-padding: 20;">
+            <Label text="Rapports et Statistiques"
+                   style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Retour" onAction="#handleRetour"
+                    style="-fx-background-color: #2980b9; -fx-text-fill: white;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="20" padding="20">
+            <Label text="Sélectionnez le type de rapport à afficher:" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+
+            <HBox spacing="15" alignment="CENTER">
+                <Button text="Réservations par type" onAction="#handleReservationsParType" prefWidth="200" prefHeight="50"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;" />
+                <Button text="Revenus mensuels" onAction="#handleRevenusMensuels" prefWidth="200" prefHeight="50"
+                        style="-fx-background-color: #9b59b6; -fx-text-fill: white;" />
+                <Button text="Étoiles par type" onAction="#handleEtoilesParType" prefWidth="200" prefHeight="50"
+                        style="-fx-background-color: #e67e22; -fx-text-fill: white;" />
+            </HBox>
+
+            <ScrollPane fitToWidth="true" fitToHeight="true">
+                <VBox fx:id="chartContainer" spacing="20" padding="20" alignment="CENTER"
+                      style="-fx-background-color: white; -fx-border-color: #bdc3c7; -fx-border-width: 1;" />
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

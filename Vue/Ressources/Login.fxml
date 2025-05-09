@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vue.LoginController">
+    <padding>
+        <Insets bottom="40" left="40" right="40" top="40" />
+    </padding>
+
+    <Label text="Connexion" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+    <VBox spacing="10">
+        <Label text="Email:" style="-fx-font-size: 14px;" />
+        <TextField fx:id="emailField" promptText="Votre email" prefWidth="280" />
+    </VBox>
+
+    <VBox spacing="10">
+        <Label text="Mot de passe:" style="-fx-font-size: 14px;" />
+        <PasswordField fx:id="passwordField" promptText="Votre mot de passe" prefWidth="280" />
+    </VBox>
+
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Se connecter" onAction="#handleConnexion" prefWidth="120"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" />
+        <Button text="S'inscrire" onAction="#handleInscription" prefWidth="120"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-cursor: hand;" />
+    </HBox>
+</VBox>
