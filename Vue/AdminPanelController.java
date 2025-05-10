@@ -23,6 +23,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.List;
+import java.util.Optional;
 
 public class AdminPanelController implements Initializable {
 
@@ -219,17 +220,16 @@ public class AdminPanelController implements Initializable {
             String activites = activitesHebergementField.getText();
             double prix = Double.parseDouble(prixHebergementField.getText());
 
+            // Vérifications
+            if (nom.isEmpty() || type.isEmpty() || activites.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tous les champs texte");
+                return;
+            }
+
             // Générer un nouvel ID
             int newId = generateNewHebergementId();
 
-            Hebergement hebergement = new Hebergement();
-            hebergement.setId(newId);
-            hebergement.setNom(nom);
-            hebergement.setType(type);
-            hebergement.setNbEtoiles(etoiles);
-            hebergement.setDistanceCentre(distance);
-            hebergement.setActivites(activites);
-            hebergement.setPrixNuit(prix);
+            Hebergement hebergement = new Hebergement(newId, nom, type, etoiles, distance, activites, prix);
 
             if (hebergementControleur.ajouterHebergement(hebergement)) {
                 clearHebergementFields();
@@ -239,7 +239,7 @@ public class AdminPanelController implements Initializable {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter l'hébergement");
             }
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez vérifier les données saisies");
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez vérifier les données saisies (nombres uniquement pour étoiles, distance et prix)");
         }
     }
 
@@ -258,8 +258,17 @@ public class AdminPanelController implements Initializable {
     void handleModifierHebergement(ActionEvent event) {
         Hebergement selected = hebergementsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            // Implémenter la modification d'hébergement
-            showAlert(Alert.AlertType.INFORMATION, "Info", "Modification d'hébergement - À implémenter");
+            // Remplir les champs avec les données actuelles
+            nomHebergementField.setText(selected.getNom());
+            typeHebergementField.setText(selected.getType());
+            etoilesHebergementField.setText(String.valueOf(selected.getNbEtoiles()));
+            distanceHebergementField.setText(String.valueOf(selected.getDistanceCentre()));
+            activitesHebergementField.setText(selected.getActivites());
+            prixHebergementField.setText(String.valueOf(selected.getPrixNuit()));
+
+            showAlert(Alert.AlertType.INFORMATION, "Info", "Les champs ont été remplis. Modifiez et ajoutez pour enregistrer.");
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Sélection requise", "Veuillez sélectionner un hébergement à modifier");
         }
     }
 
@@ -267,12 +276,22 @@ public class AdminPanelController implements Initializable {
     void handleSupprimerHebergement(ActionEvent event) {
         Hebergement selected = hebergementsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            if (hebergementControleur.supprimerHebergement(selected.getId())) {
-                hebergementsTable.getItems().remove(selected);
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Hébergement supprimé avec succès");
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer l'hébergement");
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Confirmation");
+            confirmation.setHeaderText("Suppression d'hébergement");
+            confirmation.setContentText("Êtes-vous sûr de vouloir supprimer cet hébergement ?");
+
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                if (hebergementControleur.supprimerHebergement(selected.getId())) {
+                    hebergementsTable.getItems().remove(selected);
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Hébergement supprimé avec succès");
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer l'hébergement");
+                }
             }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Sélection requise", "Veuillez sélectionner un hébergement à supprimer");
         }
     }
 
@@ -280,12 +299,22 @@ public class AdminPanelController implements Initializable {
     void handleSupprimerReservation(ActionEvent event) {
         Reservation selected = reservationsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            if (reservationControleur.annulerReservation(selected.getId())) {
-                reservationsTable.getItems().remove(selected);
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Réservation supprimée avec succès");
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer la réservation");
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Confirmation");
+            confirmation.setHeaderText("Suppression de réservation");
+            confirmation.setContentText("Êtes-vous sûr de vouloir supprimer cette réservation ?");
+
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                if (reservationControleur.annulerReservation(selected.getId())) {
+                    reservationsTable.getItems().remove(selected);
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Réservation supprimée avec succès");
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer la réservation");
+                }
             }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Sélection requise", "Veuillez sélectionner une réservation à supprimer");
         }
     }
 
@@ -293,7 +322,19 @@ public class AdminPanelController implements Initializable {
     void handleAjouterReduction(ActionEvent event) {
         try {
             String description = descriptionReductionField.getText();
-            double pourcentage = Double.parseDouble(pourcentageReductionField.getText());
+            String pourcentageStr = pourcentageReductionField.getText();
+
+            if (description.isEmpty() || pourcentageStr.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tous les champs");
+                return;
+            }
+
+            double pourcentage = Double.parseDouble(pourcentageStr);
+
+            if (pourcentage <= 0 || pourcentage > 100) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Le pourcentage doit être entre 1 et 100");
+                return;
+            }
 
             // Générer un nouvel ID
             int newId = generateNewReductionId();
@@ -307,8 +348,10 @@ public class AdminPanelController implements Initializable {
             } else {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter la réduction");
             }
-        } catch (SQLException | NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ajout de la réduction");
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de base de données: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Le pourcentage doit être un nombre");
         }
     }
 
@@ -332,8 +375,13 @@ public class AdminPanelController implements Initializable {
     void handleModifierReduction(ActionEvent event) {
         Reduction selected = reductionsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            // Implémenter la modification de réduction
-            showAlert(Alert.AlertType.INFORMATION, "Info", "Modification de réduction - À implémenter");
+            // Remplir les champs avec les données actuelles
+            descriptionReductionField.setText(selected.getDescription());
+            pourcentageReductionField.setText(String.valueOf(selected.getPourcentage()));
+
+            showAlert(Alert.AlertType.INFORMATION, "Info", "Les champs ont été remplis. Modifiez et ajoutez pour enregistrer.");
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Sélection requise", "Veuillez sélectionner une réduction à modifier");
         }
     }
 
@@ -341,20 +389,28 @@ public class AdminPanelController implements Initializable {
     void handleSupprimerReduction(ActionEvent event) {
         Reduction selected = reductionsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            try {
-                if (reductionDAO.supprimer(selected.getId())) {
-                    reductionsTable.getItems().remove(selected);
-                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Réduction supprimée avec succès");
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer la réduction");
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Confirmation");
+            confirmation.setHeaderText("Suppression de réduction");
+            confirmation.setContentText("Êtes-vous sûr de vouloir supprimer cette réduction ?");
+
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    if (reductionDAO.supprimer(selected.getId())) {
+                        reductionsTable.getItems().remove(selected);
+                        showAlert(Alert.AlertType.INFORMATION, "Succès", "Réduction supprimée avec succès");
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer la réduction");
+                    }
+                } catch (SQLException e) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de base de données: " + e.getMessage());
                 }
-            } catch (SQLException e) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la suppression");
             }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Sélection requise", "Veuillez sélectionner une réduction à supprimer");
         }
     }
-
-    // Méthode handleReporting supprimée
 
     private void clearHebergementFields() {
         nomHebergementField.clear();

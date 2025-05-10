@@ -4,14 +4,18 @@ import Controleur.HebergementControleur;
 import Controleur.Main;
 import Controleur.ReservationControleur;
 import Controleur.UtilisateurControleur;
+import DAO.ReductionDAO;
+import DAO.ReductionDAOImpl;
 import Modele.Hebergement;
 import Modele.Reservation;
 import Modele.Utilisateur;
+import Modele.Reduction;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.List;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ReservationFormController {
@@ -37,8 +41,12 @@ public class ReservationFormController {
     @FXML
     private Label prixTotalLabel;
 
+    @FXML
+    private Label reductionInfoLabel;
+
     private HebergementControleur hebergementControleur = new HebergementControleur();
     private ReservationControleur reservationControleur = new ReservationControleur();
+    private ReductionDAO reductionDAO = new ReductionDAOImpl();
     private int hebergementId;
     private Hebergement hebergement;
 
@@ -87,23 +95,97 @@ public class ReservationFormController {
             long nbNuits = java.time.temporal.ChronoUnit.DAYS.between(dateArrivee, dateDepart);
             int nbChambres = chambreSpinner.getValue();
 
-            double prixTotal = hebergement.getPrixNuit() * nbNuits * nbChambres;
+            double prixBase = hebergement.getPrixNuit() * nbNuits * nbChambres;
+            BigDecimal totalBigDecimal = BigDecimal.valueOf(prixBase);
 
-            // Vérifier si l'utilisateur a droit à une réduction
+            // Calculer les réductions automatiques
             Utilisateur utilisateur = UtilisateurControleur.getUtilisateurConnecte();
+            BigDecimal reductionTotale = BigDecimal.ZERO;
+            StringBuilder detailsReduction = new StringBuilder();
+
+            // Afficher le prix de base
+            detailsReduction.append("Prix de base : ").append(String.format("%.2f€", prixBase)).append("\n\n");
+            detailsReduction.append("Réductions appliquées :\n");
+
             if (utilisateur != null) {
-                UtilisateurControleur utilisateurControleur = new UtilisateurControleur();
-                if (utilisateurControleur.estAncienClient(utilisateur.getId())) {
-                    // Appliquer une réduction de 10% pour les anciens clients (exemple)
-                    prixTotal = prixTotal * 0.9;
-                    prixTotalLabel.setText(String.format("%.2f € (réduction de 10%% appliquée)", prixTotal));
-                } else {
-                    prixTotalLabel.setText(String.format("%.2f €", prixTotal));
+                // 1. Réduction anciens clients
+                if (estAncienClient(utilisateur.getId())) {
+                    BigDecimal reductionAncienClient = totalBigDecimal.multiply(BigDecimal.valueOf(0.10));
+                    reductionTotale = reductionTotale.add(reductionAncienClient);
+                    detailsReduction.append("• Ancien client (10%) : -")
+                            .append(String.format("%.2f€", reductionAncienClient.doubleValue()))
+                            .append("\n");
+                }
+
+                // 2. Réduction sur montant élevé
+                if (totalBigDecimal.compareTo(BigDecimal.valueOf(500)) >= 0) {
+                    BigDecimal reductionMontant = totalBigDecimal.multiply(BigDecimal.valueOf(0.05));
+                    reductionTotale = reductionTotale.add(reductionMontant);
+                    detailsReduction.append("• Réservation > 500€ (5%) : -")
+                            .append(String.format("%.2f€", reductionMontant.doubleValue()))
+                            .append("\n");
+                }
+
+                // 3. Réductions spécifiques
+                try {
+                    List<Reduction> reductions = reductionDAO.trouverParUtilisateur(utilisateur.getId());
+                    for (Reduction r : reductions) {
+                        BigDecimal reductionSpecifique = totalBigDecimal.multiply(BigDecimal.valueOf(r.getPourcentage() / 100.0));
+                        reductionTotale = reductionTotale.add(reductionSpecifique);
+                        detailsReduction.append("• ").append(r.getDescription())
+                                .append(" (").append(r.getPourcentage()).append("%) : -")
+                                .append(String.format("%.2f€", reductionSpecifique.doubleValue()))
+                                .append("\n");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // Limiter à 30% maximum
+                BigDecimal maxReduction = totalBigDecimal.multiply(BigDecimal.valueOf(0.30));
+                if (reductionTotale.compareTo(maxReduction) > 0) {
+                    BigDecimal difference = reductionTotale.subtract(maxReduction);
+                    reductionTotale = maxReduction;
+                    detailsReduction.append("\n(Réduction limitée à 30% maximum : +")
+                            .append(String.format("%.2f€", difference.doubleValue()))
+                            .append(" non applicable)");
+                }
+            }
+
+            // Calculer le prix final
+            BigDecimal prixFinal = totalBigDecimal.subtract(reductionTotale);
+
+            // Mettre à jour les labels
+            if (reductionTotale.compareTo(BigDecimal.ZERO) > 0) {
+                detailsReduction.append("\n").append("-".repeat(30)).append("\n");
+                detailsReduction.append("Total des réductions : -")
+                        .append(String.format("%.2f€", reductionTotale.doubleValue()))
+                        .append("\n");
+                detailsReduction.append("Prix final : ")
+                        .append(String.format("%.2f€", prixFinal.doubleValue()));
+
+                prixTotalLabel.setText(String.format("%.2f € (réduction de %.2f €)",
+                        prixFinal.doubleValue(), reductionTotale.doubleValue()));
+
+                if (reductionInfoLabel != null) {
+                    reductionInfoLabel.setText(detailsReduction.toString());
                 }
             } else {
-                prixTotalLabel.setText(String.format("%.2f €", prixTotal));
+                // Pas de réduction
+                detailsReduction.append("Aucune réduction applicable\n");
+                detailsReduction.append("Prix final : ").append(String.format("%.2f€", prixBase));
+
+                prixTotalLabel.setText(String.format("%.2f €", prixBase));
+                if (reductionInfoLabel != null) {
+                    reductionInfoLabel.setText(detailsReduction.toString());
+                }
             }
         }
+    }
+
+    private boolean estAncienClient(int userId) {
+        List<Reservation> reservations = reservationControleur.getReservationsClient(userId);
+        return !reservations.isEmpty();
     }
 
     @FXML
@@ -128,7 +210,7 @@ public class ReservationFormController {
         int nbEnfants = enfantSpinner.getValue();
         int nbChambres = chambreSpinner.getValue();
 
-        // Créer la réservation
+        // Créer la réservation avec réductions automatiques
         boolean success = reservationControleur.creerReservation(
                 utilisateur.getId(),
                 hebergementId,
@@ -142,10 +224,9 @@ public class ReservationFormController {
         if (success) {
             showAlert(Alert.AlertType.INFORMATION, "Réservation réussie", "Votre réservation a été enregistrée avec succès.");
 
-            // Récupérer la réservation qui vient d'être créée pour l'écran de paiement
+            // Récupérer la réservation pour l'écran de paiement
             List<Reservation> reservations = reservationControleur.getReservationsClient(utilisateur.getId());
             if (reservations != null && !reservations.isEmpty()) {
-                // On suppose que la dernière réservation est celle qu'on vient de créer
                 Reservation reservation = reservations.get(reservations.size() - 1);
                 Main.showPaiementView(reservation);
             } else {
