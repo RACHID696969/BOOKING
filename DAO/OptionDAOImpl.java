@@ -10,7 +10,7 @@ public class OptionDAOImpl implements OptionDAO {
     @Override
     public Option trouverParId(int id) throws SQLException {
         Option option = null;
-        String query = "SELECT * FROM Option WHERE id = ?";
+        String query = "SELECT * FROM `Option` WHERE id = ?";
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -31,7 +31,7 @@ public class OptionDAOImpl implements OptionDAO {
     @Override
     public List<Option> trouverTout() throws SQLException {
         List<Option> options = new ArrayList<>();
-        String query = "SELECT * FROM Option";
+        String query = "SELECT * FROM `Option`";
 
         try (Connection conn = ConnexionBD.getConnection();
              Statement stmt = conn.createStatement();
@@ -52,8 +52,8 @@ public class OptionDAOImpl implements OptionDAO {
     @Override
     public List<Option> trouverParHebergement(int hebergementId) throws SQLException {
         List<Option> options = new ArrayList<>();
-        String query = "SELECT o.* FROM Option o "
-                + "JOIN Options-hebergement oh ON o.id = oh.id_option "
+        String query = "SELECT o.* FROM `Option` o "
+                + "JOIN options_hebergement oh ON o.id = oh.id_option "  // Changé de options-hebergement à options_hebergement
                 + "WHERE oh.id_hebergement = ?";
 
         try (Connection conn = ConnexionBD.getConnection();
@@ -75,7 +75,7 @@ public class OptionDAOImpl implements OptionDAO {
 
     @Override
     public boolean ajouter(Option option) throws SQLException {
-        String query = "INSERT INTO Option (id, nom) VALUES (?, ?)";
+        String query = "INSERT INTO `Option` (id, nom) VALUES (?, ?)";
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -88,7 +88,7 @@ public class OptionDAOImpl implements OptionDAO {
 
     @Override
     public boolean mettreAJour(Option option) throws SQLException {
-        String query = "UPDATE Option SET nom = ? WHERE id = ?";
+        String query = "UPDATE `Option` SET nom = ? WHERE id = ?";
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -101,7 +101,7 @@ public class OptionDAOImpl implements OptionDAO {
 
     @Override
     public boolean supprimer(int id) throws SQLException {
-        String query = "DELETE FROM Option WHERE id = ?";
+        String query = "DELETE FROM `Option` WHERE id = ?";
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -113,7 +113,7 @@ public class OptionDAOImpl implements OptionDAO {
 
     @Override
     public boolean ajouterOptionHebergement(int optionId, int hebergementId) throws SQLException {
-        String query = "INSERT INTO Options-hebergement (id_option, id_hebergement) VALUES (?, ?)";
+        String query = "INSERT INTO options_hebergement (id_option, id_hebergement) VALUES (?, ?)";  // Changé de options-hebergement à options_hebergement
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -126,7 +126,7 @@ public class OptionDAOImpl implements OptionDAO {
 
     @Override
     public boolean supprimerOptionHebergement(int optionId, int hebergementId) throws SQLException {
-        String query = "DELETE FROM Options-hebergement WHERE id_option = ? AND id_hebergement = ?";
+        String query = "DELETE FROM options_hebergement WHERE id_option = ? AND id_hebergement = ?";  // Changé de options-hebergement à options_hebergement
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {

@@ -55,8 +55,8 @@ public class ReductionDAOImpl implements ReductionDAO {
     public List<Reduction> trouverParUtilisateur(int utilisateurId) throws SQLException {
         List<Reduction> reductions = new ArrayList<>();
         String query = "SELECT r.* FROM Reduction r "
-                + "JOIN Reduction-Utilisateur ru ON r.id = ru.id_reduction "
-                + "WHERE ru.id_utilisteur = ?";
+                + "JOIN reduction_utilisateur ru ON r.id = ru.id_reduction "
+                + "WHERE ru.id_utilisateur = ?";  // Corrigé: id_utilisateur au lieu de id_utilisteur
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -118,7 +118,7 @@ public class ReductionDAOImpl implements ReductionDAO {
 
     @Override
     public boolean ajouterReductionUtilisateur(int reductionId, int utilisateurId) throws SQLException {
-        String query = "INSERT INTO Reduction-Utilisateur (id_reduction, id_utilisteur) VALUES (?, ?)";
+        String query = "INSERT INTO reduction_utilisateur (id_reduction, id_utilisateur) VALUES (?, ?)";  // Corrigé: id_utilisateur au lieu de id_utilisteur
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -131,7 +131,7 @@ public class ReductionDAOImpl implements ReductionDAO {
 
     @Override
     public boolean supprimerReductionUtilisateur(int reductionId, int utilisateurId) throws SQLException {
-        String query = "DELETE FROM Reduction-Utilisateur WHERE id_reduction = ? AND id_utilisteur = ?";
+        String query = "DELETE FROM reduction_utilisateur WHERE id_reduction = ? AND id_utilisateur = ?";  // Corrigé: id_utilisateur au lieu de id_utilisteur
 
         try (Connection conn = ConnexionBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {

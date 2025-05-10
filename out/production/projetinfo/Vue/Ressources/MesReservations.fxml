@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Vue.MesReservationsController">
+    <top>
+        <HBox style="-fx-background-color: #27ae60;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <Label text="Mes Réservations" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Retour à l'accueil" onAction="#handleRetour"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 1;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="20">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <Label text="Voici toutes vos réservations :" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+            <TableView fx:id="reservationsTable">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50" />
+                    <TableColumn fx:id="hebergementColumn" text="Hébergement" prefWidth="150" />
+                    <TableColumn fx:id="arriveeColumn" text="Date d'arrivée" prefWidth="100" />
+                    <TableColumn fx:id="departColumn" text="Date de départ" prefWidth="100" />
+                    <TableColumn fx:id="adultesColumn" text="Adultes" prefWidth="70" />
+                    <TableColumn fx:id="enfantsColumn" text="Enfants" prefWidth="70" />
+                    <TableColumn fx:id="chambresColumn" text="Chambres" prefWidth="80" />
+                    <TableColumn fx:id="totalColumn" text="Total" prefWidth="100" />
+                    <TableColumn fx:id="statusColumn" text="Statut" prefWidth="100" />
+                </columns>
+            </TableView>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Button text="Annuler la réservation" onAction="#handleAnnulerReservation"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+                <Button text="Modifier la réservation" onAction="#handleModifierReservation"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+                <Label fx:id="messageLabel" style="-fx-font-style: italic; -fx-text-fill: #666;" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

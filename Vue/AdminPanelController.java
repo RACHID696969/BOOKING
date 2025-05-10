@@ -22,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.List;
 
 public class AdminPanelController implements Initializable {
 
@@ -210,7 +211,11 @@ public class AdminPanelController implements Initializable {
             String activites = activitesHebergementField.getText();
             double prix = Double.parseDouble(prixHebergementField.getText());
 
+            // Générer un nouvel ID
+            int newId = generateNewHebergementId();
+
             Hebergement hebergement = new Hebergement();
+            hebergement.setId(newId);  // <-- ID généré automatiquement
             hebergement.setNom(nom);
             hebergement.setType(type);
             hebergement.setNbEtoiles(etoiles);
@@ -229,6 +234,17 @@ public class AdminPanelController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez vérifier les données saisies");
         }
     }
+    private int generateNewHebergementId() {
+        List<Hebergement> hebergements = hebergementControleur.getAllHebergements();
+        int maxId = 0;
+        for (Hebergement h : hebergements) {
+            if (h.getId() > maxId) {
+                maxId = h.getId();
+            }
+        }
+        return maxId + 1;
+    }
+
 
     @FXML
     void handleModifierHebergement(ActionEvent event) {
@@ -271,9 +287,10 @@ public class AdminPanelController implements Initializable {
             String description = descriptionReductionField.getText();
             double pourcentage = Double.parseDouble(pourcentageReductionField.getText());
 
-            Reduction reduction = new Reduction();
-            reduction.setDescription(description);
-            reduction.setPourcentage(pourcentage);
+            // Générer un nouvel ID
+            int newId = generateNewReductionId();
+
+            Reduction reduction = new Reduction(newId, description, pourcentage);  // <-- ID généré automatiquement
 
             if (reductionDAO.ajouter(reduction)) {
                 clearReductionFields();
@@ -284,6 +301,21 @@ public class AdminPanelController implements Initializable {
             }
         } catch (SQLException | NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ajout de la réduction");
+        }
+    }
+    private int generateNewReductionId() {
+        try {
+            List<Reduction> reductions = reductionDAO.trouverTout();
+            int maxId = 0;
+            for (Reduction r : reductions) {
+                if (r.getId() > maxId) {
+                    maxId = r.getId();
+                }
+            }
+            return maxId + 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 1; // ID par défaut en cas d'erreur
         }
     }
 

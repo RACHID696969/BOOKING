@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Vue.RechercheHebergementController">
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #ecf0f1; -fx-padding: 20;">
+            <Label text="Recherche d'hébergements" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+            <GridPane hgap="15" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="100" />
+                    <ColumnConstraints minWidth="200" />
+                </columnConstraints>
+
+                <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <ComboBox fx:id="typeComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200" />
+
+                <Label text="Étoiles min:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Slider fx:id="etoilesSlider" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Prix max:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <TextField fx:id="prixMaxField" GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="100"
+                           promptText="€" />
+
+                <Label text="Distance max:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="distanceMaxField" GridPane.columnIndex="3" GridPane.rowIndex="1" prefWidth="100"
+                           promptText="km" />
+            </GridPane>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Rechercher" onAction="#handleRecherche"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;" />
+                <Button text="Retour" onAction="#handleRetour"
+                        style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="hebergementTable">
+            <columns>
+                <TableColumn fx:id="nomColumn" text="Nom" prefWidth="150" />
+                <TableColumn fx:id="typeColumn" text="Type" prefWidth="100" />
+                <TableColumn fx:id="etoilesColumn" text="Étoiles" prefWidth="80" />
+                <TableColumn fx:id="distanceColumn" text="Distance (km)" prefWidth="100" />
+                <TableColumn fx:id="prixColumn" text="Prix/nuit (€)" prefWidth="100" />
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

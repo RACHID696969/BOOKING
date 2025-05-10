@@ -36,7 +36,7 @@ public class Main extends Application {
 
     public static void showMainView() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Accueil.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/Accueil.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -140,6 +140,19 @@ public class Main extends Application {
     public static void showReportingView() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/Reporting.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showMesReservationsView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/MesReservations.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);

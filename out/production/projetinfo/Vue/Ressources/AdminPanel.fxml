@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Vue.AdminPanelController">
+    <top>
+        <HBox style="-fx-background-color: #9b59b6;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <Label text="Panneau d'administration"
+                   style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Retour à l'accueil" onAction="#handleRetour"
+                    style="-fx-background-color: #8e44ad; -fx-text-fill: white;" />
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane>
+            <Tab text="Utilisateurs" closable="false">
+                <content>
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+                        <TableView fx:id="utilisateursTable">
+                            <columns>
+                                <TableColumn fx:id="idUtilisateurColumn" text="ID" prefWidth="50" />
+                                <TableColumn fx:id="nomUtilisateurColumn" text="Nom" prefWidth="100" />
+                                <TableColumn fx:id="prenomUtilisateurColumn" text="Prénom" prefWidth="100" />
+                                <TableColumn fx:id="emailUtilisateurColumn" text="Email" prefWidth="150" />
+                                <TableColumn fx:id="roleUtilisateurColumn" text="Rôle" prefWidth="80" />
+                            </columns>
+                        </TableView>
+                        <HBox spacing="10">
+                            <Button text="Modifier" onAction="#handleModifierUtilisateur" />
+                            <Button text="Supprimer" onAction="#handleSupprimerUtilisateur"
+                                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <Tab text="Hébergements" closable="false">
+                <content>
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="nomHebergementField" promptText="Nom" />
+                            <TextField fx:id="typeHebergementField" promptText="Type" />
+                            <TextField fx:id="etoilesHebergementField" promptText="Étoiles" prefWidth="80" />
+                            <TextField fx:id="distanceHebergementField" promptText="Distance" prefWidth="80" />
+                            <TextField fx:id="activitesHebergementField" promptText="Activités" prefWidth="120" />
+                            <TextField fx:id="prixHebergementField" promptText="Prix" prefWidth="80" />
+                            <Button text="Ajouter" onAction="#handleAjouterHebergement"
+                                    style="-fx-background-color: #2ecc71; -fx-text-fill: white;" />
+                        </HBox>
+                        <TableView fx:id="hebergementsTable">
+                            <columns>
+                                <TableColumn fx:id="idHebergementColumn" text="ID" prefWidth="50" />
+                                <TableColumn fx:id="nomHebergementColumn" text="Nom" prefWidth="150" />
+                                <TableColumn fx:id="typeHebergementColumn" text="Type" prefWidth="100" />
+                                <TableColumn fx:id="etoilesHebergementColumn" text="Étoiles" prefWidth="80" />
+                                <TableColumn fx:id="distanceHebergementColumn" text="Distance" prefWidth="80" />
+                                <TableColumn fx:id="prixHebergementColumn" text="Prix" prefWidth="80" />
+                            </columns>
+                        </TableView>
+                        <HBox spacing="10">
+                            <Button text="Modifier" onAction="#handleModifierHebergement" />
+                            <Button text="Supprimer" onAction="#handleSupprimerHebergement"
+                                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <Tab text="Réservations" closable="false">
+                <content>
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+                        <TableView fx:id="reservationsTable">
+                            <columns>
+                                <TableColumn fx:id="idReservationColumn" text="ID" prefWidth="50" />
+                                <TableColumn fx:id="clientReservationColumn" text="Client ID" prefWidth="80" />
+                                <TableColumn fx:id="hebergementReservationColumn" text="Hébergement ID" prefWidth="100" />
+                                <TableColumn fx:id="arriveeReservationColumn" text="Arrivée" prefWidth="100" />
+                                <TableColumn fx:id="departReservationColumn" text="Départ" prefWidth="100" />
+                                <TableColumn fx:id="adultesReservationColumn" text="Adultes" prefWidth="70" />
+                                <TableColumn fx:id="enfantsReservationColumn" text="Enfants" prefWidth="70" />
+                                <TableColumn fx:id="chambresReservationColumn" text="Chambres" prefWidth="80" />
+                                <TableColumn fx:id="totalReservationColumn" text="Total" prefWidth="100" />
+                            </columns>
+                        </TableView>
+                        <HBox spacing="10">
+                            <Button text="Supprimer" onAction="#handleSupprimerReservation"
+                                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <Tab text="Réductions" closable="false">
+                <content>
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="descriptionReductionField" promptText="Description" prefWidth="200" />
+                            <TextField fx:id="pourcentageReductionField" promptText="Pourcentage" prefWidth="100" />
+                            <Button text="Ajouter" onAction="#handleAjouterReduction"
+                                    style="-fx-background-color: #2ecc71; -fx-text-fill: white;" />
+                        </HBox>
+                        <TableView fx:id="reductionsTable">
+                            <columns>
+                                <TableColumn fx:id="idReductionColumn" text="ID" prefWidth="50" />
+                                <TableColumn fx:id="descriptionReductionColumn" text="Description" prefWidth="200" />
+                                <TableColumn fx:id="pourcentageReductionColumn" text="Pourcentage" prefWidth="100" />
+                            </columns>
+                        </TableView>
+                        <HBox spacing="10">
+                            <Button text="Modifier" onAction="#handleModifierReduction" />
+                            <Button text="Supprimer" onAction="#handleSupprimerReduction"
+                                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <Tab text="Reporting" closable="false">
+                <content>
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+                        <Button text="Voir les rapports détaillés" onAction="#handleReporting" prefWidth="200"
+                                style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+                    </VBox>
+                </content>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

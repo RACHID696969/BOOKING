@@ -7,7 +7,10 @@
 <BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Vue.AdminPanelController">
     <top>
-        <HBox style="-fx-background-color: #9b59b6; -fx-padding: 20;">
+        <HBox style="-fx-background-color: #9b59b6;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
             <Label text="Panneau d'administration"
                    style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
             <Region HBox.hgrow="ALWAYS" />
@@ -20,7 +23,10 @@
         <TabPane>
             <Tab text="Utilisateurs" closable="false">
                 <content>
-                    <VBox spacing="10" padding="10">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
                         <TableView fx:id="utilisateursTable">
                             <columns>
                                 <TableColumn fx:id="idUtilisateurColumn" text="ID" prefWidth="50" />
@@ -41,12 +47,16 @@
 
             <Tab text="Hébergements" closable="false">
                 <content>
-                    <VBox spacing="10" padding="10">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
                         <HBox spacing="10" alignment="CENTER_LEFT">
                             <TextField fx:id="nomHebergementField" promptText="Nom" />
                             <TextField fx:id="typeHebergementField" promptText="Type" />
                             <TextField fx:id="etoilesHebergementField" promptText="Étoiles" prefWidth="80" />
                             <TextField fx:id="distanceHebergementField" promptText="Distance" prefWidth="80" />
+                            <TextField fx:id="activitesHebergementField" promptText="Activités" prefWidth="120" />
                             <TextField fx:id="prixHebergementField" promptText="Prix" prefWidth="80" />
                             <Button text="Ajouter" onAction="#handleAjouterHebergement"
                                     style="-fx-background-color: #2ecc71; -fx-text-fill: white;" />
@@ -72,7 +82,10 @@
 
             <Tab text="Réservations" closable="false">
                 <content>
-                    <VBox spacing="10" padding="10">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
                         <TableView fx:id="reservationsTable">
                             <columns>
                                 <TableColumn fx:id="idReservationColumn" text="ID" prefWidth="50" />
@@ -96,7 +109,10 @@
 
             <Tab text="Réductions" closable="false">
                 <content>
-                    <VBox spacing="10" padding="10">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
                         <HBox spacing="10" alignment="CENTER_LEFT">
                             <TextField fx:id="descriptionReductionField" promptText="Description" prefWidth="200" />
                             <TextField fx:id="pourcentageReductionField" promptText="Pourcentage" prefWidth="100" />
@@ -121,7 +137,10 @@
 
             <Tab text="Reporting" closable="false">
                 <content>
-                    <VBox spacing="10" padding="10" alignment="CENTER">
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
                         <Button text="Voir les rapports détaillés" onAction="#handleReporting" prefWidth="200"
                                 style="-fx-background-color: #3498db; -fx-text-fill: white;" />
                     </VBox>

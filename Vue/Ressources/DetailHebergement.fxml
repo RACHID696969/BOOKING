@@ -16,7 +16,11 @@
     </top>
 
     <center>
-        <VBox spacing="20" padding="40">
+        <VBox spacing="20">
+            <padding>
+                <Insets bottom="40" left="40" right="40" top="40" />
+            </padding>
+
             <GridPane hgap="20" vgap="15">
                 <columnConstraints>
                     <ColumnConstraints minWidth="100" />
