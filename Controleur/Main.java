@@ -23,7 +23,7 @@ public class Main extends Application {
 
     public static void showLoginView() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/Login.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -49,7 +49,7 @@ public class Main extends Application {
 
     public static void showRegistrationView() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Inscription.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/Inscription.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -62,7 +62,7 @@ public class Main extends Application {
 
     public static void showSearchView() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/RechercheHebergement.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/RechercheHebergement.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -75,7 +75,7 @@ public class Main extends Application {
 
     public static void showHebergementDetailView(int hebergementId) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/DetailHebergement.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/DetailHebergement.fxml"));
             Parent root = loader.load();
 
             // Récupérer le contrôleur et définir l'hébergement à afficher
@@ -92,7 +92,7 @@ public class Main extends Application {
 
     public static void showReservationView(int hebergementId) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/ReservationForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/ReservationForm.fxml"));
             Parent root = loader.load();
 
             // Récupérer le contrôleur et définir l'hébergement à réserver
@@ -109,7 +109,7 @@ public class Main extends Application {
 
     public static void showPaiementView(Modele.Reservation reservation) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Paiement.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/Paiement.fxml"));
             Parent root = loader.load();
 
             // Récupérer le contrôleur et définir la réservation à payer
@@ -126,7 +126,7 @@ public class Main extends Application {
 
     public static void showAdminPanel() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/AdminPanel.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/AdminPanel.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -139,7 +139,7 @@ public class Main extends Application {
 
     public static void showReportingView() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Reporting.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/Vue/Ressources/Reporting.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
