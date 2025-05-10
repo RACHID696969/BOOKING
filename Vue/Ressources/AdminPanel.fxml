@@ -134,18 +134,6 @@
                     </VBox>
                 </content>
             </Tab>
-
-            <Tab text="Reporting" closable="false">
-                <content>
-                    <VBox spacing="10" alignment="CENTER">
-                        <padding>
-                            <Insets bottom="10" left="10" right="10" top="10" />
-                        </padding>
-                        <Button text="Voir les rapports détaillés" onAction="#handleReporting" prefWidth="200"
-                                style="-fx-background-color: #3498db; -fx-text-fill: white;" />
-                    </VBox>
-                </content>
-            </Tab>
         </TabPane>
     </center>
 </BorderPane>

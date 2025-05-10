@@ -176,7 +176,15 @@ public class AdminPanelController implements Initializable {
 
     @FXML
     void handleRetour(ActionEvent event) {
-        Main.showMainView();
+        System.out.println("Bouton retour cliqué - AdminPanel");
+        try {
+            Main.showMainView();
+            System.out.println("showMainView() appelé avec succès");
+        } catch (Exception e) {
+            System.err.println("Erreur lors du retour: " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de retourner à l'accueil: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -215,7 +223,7 @@ public class AdminPanelController implements Initializable {
             int newId = generateNewHebergementId();
 
             Hebergement hebergement = new Hebergement();
-            hebergement.setId(newId);  // <-- ID généré automatiquement
+            hebergement.setId(newId);
             hebergement.setNom(nom);
             hebergement.setType(type);
             hebergement.setNbEtoiles(etoiles);
@@ -234,6 +242,7 @@ public class AdminPanelController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez vérifier les données saisies");
         }
     }
+
     private int generateNewHebergementId() {
         List<Hebergement> hebergements = hebergementControleur.getAllHebergements();
         int maxId = 0;
@@ -244,7 +253,6 @@ public class AdminPanelController implements Initializable {
         }
         return maxId + 1;
     }
-
 
     @FXML
     void handleModifierHebergement(ActionEvent event) {
@@ -290,7 +298,7 @@ public class AdminPanelController implements Initializable {
             // Générer un nouvel ID
             int newId = generateNewReductionId();
 
-            Reduction reduction = new Reduction(newId, description, pourcentage);  // <-- ID généré automatiquement
+            Reduction reduction = new Reduction(newId, description, pourcentage);
 
             if (reductionDAO.ajouter(reduction)) {
                 clearReductionFields();
@@ -303,6 +311,7 @@ public class AdminPanelController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ajout de la réduction");
         }
     }
+
     private int generateNewReductionId() {
         try {
             List<Reduction> reductions = reductionDAO.trouverTout();
@@ -345,10 +354,7 @@ public class AdminPanelController implements Initializable {
         }
     }
 
-    @FXML
-    void handleReporting(ActionEvent event) {
-        Main.showReportingView();
-    }
+    // Méthode handleReporting supprimée
 
     private void clearHebergementFields() {
         nomHebergementField.clear();
