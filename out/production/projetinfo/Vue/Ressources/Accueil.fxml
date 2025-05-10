@@ -3,35 +3,122 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Vue.AccueilController">
+
+    <!-- En-tête avec design moderne -->
     <top>
-        <HBox alignment="CENTER" spacing="15" style="-fx-background-color: #2c3e50; -fx-padding: 20;">
-            <Label fx:id="welcomeLabel" style="-fx-text-fill: white; -fx-font-size: 18px;" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button text="Déconnexion" onAction="#handleDeconnexion"
-                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
-        </HBox>
+        <VBox>
+            <!-- Barre de navigation principale -->
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #2c3e50; -fx-padding: 20;">
+                <Label text="BOOKING" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="welcomeLabel" style="-fx-text-fill: white; -fx-font-size: 16px;" />
+                <Button text="Déconnexion" onAction="#handleDeconnexion"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5px;" />
+            </HBox>
+
+            <!-- Bannière d'accueil avec fond bleu -->
+            <StackPane prefHeight="180" style="-fx-background-color: #3498db;">
+                <effect>
+                    <DropShadow blurType="GAUSSIAN" color="#00000040" offsetY="2" radius="4" spread="0.0" />
+                </effect>
+                <VBox alignment="CENTER" spacing="15">
+                    <Label text="Bienvenue dans votre plateforme de réservation"
+                           style="-fx-font-size: 30px; -fx-text-fill: white; -fx-font-weight: bold;" />
+                    <Label text="Trouvez le logement de vos rêves en quelques clics"
+                           style="-fx-font-size: 16px; -fx-text-fill: white;" />
+                    <HBox spacing="30" alignment="CENTER">
+                        <Label text="Plus de 500 hébergements" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                        <Label text="Dans toute la France" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                        <Label text="Réservation instantanée" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                    </HBox>
+                </VBox>
+            </StackPane>
+        </VBox>
     </top>
 
     <center>
-        <VBox alignment="CENTER" spacing="30">
+        <VBox alignment="CENTER" spacing="40" style="-fx-background-color: #f8f9fa;">
             <padding>
-                <Insets bottom="50" left="50" right="50" top="50" />
+                <Insets bottom="60" left="50" right="50" top="60" />
             </padding>
 
-            <Label text="Que souhaitez-vous faire ?" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+            <!-- Section des actions principales -->
+            <VBox alignment="CENTER" spacing="30">
+                <Label text="Que souhaitez-vous faire ?"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
 
-            <HBox spacing="20" alignment="CENTER">
-                <Button text="Rechercher un hébergement" onAction="#handleRechercheHebergement"
-                        prefWidth="200" prefHeight="100" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px;" />
-                <Button fx:id="adminButton" text="Panneau d'administration" onAction="#handleAdminPanel"
-                        prefWidth="200" prefHeight="100" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-size: 14px;" />
-            </HBox>
+                <HBox spacing="40" alignment="CENTER">
+                    <!-- Carte Rechercher un hébergement -->
+                    <VBox alignment="CENTER" spacing="15" prefWidth="280" prefHeight="160"
+                          style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;">
+                        <effect>
+                            <DropShadow blurType="GAUSSIAN" color="#00000020" offsetY="3" radius="6" spread="0.0" />
+                        </effect>
+                        <Button onAction="#handleRechercheHebergement" style="-fx-background-color: transparent; -fx-border-width: 0;">
+                            <graphic>
+                                <StackPane>
+                                    <Circle radius="30" fill="#3498db" />
+                                    <Label text="🔍" style="-fx-font-size: 24px;" />
+                                </StackPane>
+                            </graphic>
+                        </Button>
+                        <Label text="Rechercher un hébergement" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-alignment: center;" wrapText="true" />
+                        <Label text="Explorez notre catalogue d'hébergements"
+                               style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-text-alignment: center;" wrapText="true" />
+                    </VBox>
 
-            <Button text="Mes réservations" onAction="#handleMesReservations" prefWidth="200" prefHeight="50"
-                    style="-fx-background-color: #27ae60; -fx-text-fill: white;" />
+                    <!-- Carte Mes réservations -->
+                    <VBox alignment="CENTER" spacing="15" prefWidth="280" prefHeight="160"
+                          style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;">
+                        <effect>
+                            <DropShadow blurType="GAUSSIAN" color="#00000020" offsetY="3" radius="6" spread="0.0" />
+                        </effect>
+                        <Button onAction="#handleMesReservations" style="-fx-background-color: transparent; -fx-border-width: 0;">
+                            <graphic>
+                                <StackPane>
+                                    <Circle radius="30" fill="#27ae60" />
+                                    <Label text="📅" style="-fx-font-size: 24px;" />
+                                </StackPane>
+                            </graphic>
+                        </Button>
+                        <Label text="Mes réservations" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-alignment: center;" wrapText="true" />
+                        <Label text="Gérez vos réservations existantes"
+                               style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-text-alignment: center;" wrapText="true" />
+                    </VBox>
+
+                    <!-- Carte Admin (visible seulement pour les admins) -->
+                    <VBox fx:id="adminCard" alignment="CENTER" spacing="15" prefWidth="280" prefHeight="160"
+                          style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;">
+                        <effect>
+                            <DropShadow blurType="GAUSSIAN" color="#00000020" offsetY="3" radius="6" spread="0.0" />
+                        </effect>
+                        <Button fx:id="adminButton" onAction="#handleAdminPanel" style="-fx-background-color: transparent; -fx-border-width: 0;">
+                            <graphic>
+                                <StackPane>
+                                    <Circle radius="30" fill="#9b59b6" />
+                                    <Label text="ADMIN" style="-fx-font-size: 12px; -fx-text-fill: white; -fx-font-weight: bold;" />
+                                </StackPane>
+                            </graphic>
+                        </Button>
+                        <Label text="Panneau d'administration" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-alignment: center;" wrapText="true" />
+                        <Label text="Gérez l'application et les données"
+                               style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-text-alignment: center;" wrapText="true" />
+                    </VBox>
+                </HBox>
+            </VBox>
         </VBox>
     </center>
+
+    <!-- Footer -->
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-background-color: #34495e; -fx-padding: 20;">
+            <Label text="© 2025 BOOKING Application - Tous droits réservés"
+                   style="-fx-text-fill: white; -fx-font-size: 12px;" />
+        </HBox>
+    </bottom>
 </BorderPane>

@@ -25,8 +25,8 @@
 
     <HBox spacing="15" alignment="CENTER">
         <Button text="Se connecter" onAction="#handleConnexion" prefWidth="120"
-                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" />
+                style="-fx-background-color: #1E3A8A; -fx-text-fill: white; -fx-background-radius: 5px;" />
         <Button text="S'inscrire" onAction="#handleInscription" prefWidth="120"
-                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-cursor: hand;" />
+                style="-fx-background-color: #DC2626; -fx-text-fill: white; -fx-background-radius: 5px;" />
     </HBox>
 </VBox>
