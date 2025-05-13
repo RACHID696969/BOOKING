@@ -161,7 +161,7 @@ public class Main extends Application {
         }
     }
 
-    // La méthode showReportingView a été supprimée
+
 
     public static void showMesReservationsView() {
         try {

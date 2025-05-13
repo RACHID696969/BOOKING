@@ -76,10 +76,8 @@ public class UtilisateurControleur {
         return utilisateurDAO.delete(id);
     }
 
-    // Méthode privée pour générer un ID unique (simulation)
+
     private int generateId() {
-        // Dans une application réelle, cette logique serait gérée par la base de données
-        // ou par un algorithme plus sophistiqué
         List<Utilisateur> utilisateurs = utilisateurDAO.findAll();
         int maxId = 0;
         for (Utilisateur u : utilisateurs) {
